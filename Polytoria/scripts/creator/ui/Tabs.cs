@@ -3,11 +3,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 using Godot;
-<<<<<<< HEAD
 using Polytoria.Creator.Settings;
-=======
-//using Polytoria.Creator.Settings;
->>>>>>> a4efa7a (Replace UI with new interface)
 using Polytoria.Creator.UI.TextEditor;
 using Polytoria.Datamodel;
 using Polytoria.Datamodel.Creator;
@@ -88,11 +84,7 @@ public sealed partial class Tabs : Control
 			{
 				if (!(control is TextEditorContainer txt && txt.EditorRoot.Saved))
 				{
-<<<<<<< HEAD
 					if (!await CreatorService.Interface.PromptConfirmation("Are you sure you want to close this tab? Any unsaved changes will be lost.", dismissKey: CreatorSettingKeys.Popups.CloseTabWarning)) return;
-=======
-					//if (!await CreatorService.Interface.PromptConfirmation("Are you sure you want to close this tab? Any unsaved changes will be lost.", dismissKey: CreatorSettingKeys.Popups.CloseTabWarning)) return;
->>>>>>> a4efa7a (Replace UI with new interface)
 				}
 			}
 
