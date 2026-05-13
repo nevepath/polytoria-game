@@ -1045,7 +1045,7 @@ mouse_filter = 2
 script = ExtResource("16_smqtq")
 
 [node name="Bar" type="HBoxContainer" parent="GUI/Splitter/Center/Tabs" unique_id=1220724128]
-custom_minimum_size = Vector2(0, 24)
+custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
 mouse_filter = 2
 
