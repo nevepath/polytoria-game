@@ -26,7 +26,7 @@ public sealed partial class Tabs : Control
 		private set
 		{
 			if (_currentControl == value) return;
-			if (_currentControl != null) _currentControl.Visible = false;
+			_currentControl?.Visible = false;
 
 			_currentControl = value;
 			if (value == null) return;
@@ -49,7 +49,7 @@ public sealed partial class Tabs : Control
 			{
 				World.Current = gameContainer.World;
 			}
-			if (value is TextEditorContainer tec && World.Current.LinkedSession != tec.TargetSession)
+			if (value is TextEditorContainer tec && World.Current != null && World.Current.LinkedSession != tec.TargetSession)
 			{
 				World.Current = tec.TargetSession.OpenedWorlds[0];
 			}
@@ -71,7 +71,7 @@ public sealed partial class Tabs : Control
 	private Button _leftButton = null!, _rightButton = null!;
 	private bool _scrollLeft, _scrollRight;
 	private int _maxScroll;
-	
+
 	private const int _scrollSidePadding = 2;
 
 	public static Tabs Singleton { get; private set; } = null!;
@@ -91,7 +91,7 @@ public sealed partial class Tabs : Control
 
 		_tabBar.TabCloseDisplayPolicy = TabBar.CloseButtonDisplayPolicy.ShowAlways;
 
-		_tabsClip.Resized += () => UpdateTabBar();
+		_tabsClip.Resized += UpdateTabBar;
 
 		_tabBar.TabChanged += idx =>
 		{
@@ -104,8 +104,8 @@ public sealed partial class Tabs : Control
 
 		_tabBar.ActiveTabRearranged += newIdx =>
 		{
-			var control = _orderedControls[(int)_selectedIdx];
-			_orderedControls.RemoveAt((int)_selectedIdx);
+			var control = _orderedControls[_selectedIdx];
+			_orderedControls.RemoveAt(_selectedIdx);
 			_orderedControls.Insert((int)newIdx, control);
 			RebuildLookup();
 			_selectedIdx = -1;
@@ -155,21 +155,13 @@ public sealed partial class Tabs : Control
 			TextEditorContainer tec = new(txt.TargetPath, fullPath, txt.Session) { OriginTabName = txt.Title ?? "" };
 			container = tec;
 			ScriptTypeEnum st = CreatorService.GetScriptTypeFromPath(txt.TargetPath);
-			switch (st)
+			icon = st switch
 			{
-				case (ScriptTypeEnum.Module):
-					icon = "ModuleScript";
-					break;
-				case (ScriptTypeEnum.Server):
-					icon = "ServerScript";
-					break;
-				case (ScriptTypeEnum.Client):
-					icon = "ClientScript";
-					break;
-				default:
-					icon = "Script";
-					break;
-			}
+				ScriptTypeEnum.Module => "ModuleScript",
+				ScriptTypeEnum.Server => "ServerScript",
+				ScriptTypeEnum.Client => "ClientScript",
+				_ => "Script",
+			};
 			_openedFiles[fullPath] = tec;
 		}
 		else
@@ -201,8 +193,8 @@ public sealed partial class Tabs : Control
 		}
 
 		int idx = _controlToIdx[control];
-		_orderedControls.RemoveAt((int)idx);
-		_tabBar.RemoveTab((int)idx);
+		_orderedControls.RemoveAt(idx);
+		_tabBar.RemoveTab(idx);
 
 		if (!isBulkOp)
 		{
@@ -236,14 +228,14 @@ public sealed partial class Tabs : Control
 			.ToList();
 
 		foreach (int idx in sessionTabs)
-			Remove(_orderedControls[idx], isBulkOp: true);
+			_ = Remove(_orderedControls[idx], isBulkOp: true);
 
 		if (_tabBar.TabCount > 0)
 		{
 			RebuildLookup();
 			if (CurrentControl == null)
 			{
-				var lowestClosed = sessionTabs[sessionTabs.Count - 1];
+				var lowestClosed = sessionTabs[^1];
 				CurrentControl = _orderedControls[Mathf.Clamp(lowestClosed, 0, _tabBar.TabCount - 1)];
 			}
 		}
