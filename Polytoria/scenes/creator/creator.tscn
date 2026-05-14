@@ -1049,14 +1049,6 @@ custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="LeftButton" type="Button" parent="GUI/Splitter/Center/Tabs/Bar" unique_id=1141546916]
-custom_minimum_size = Vector2(24, 0)
-layout_mode = 2
-action_mode = 0
-icon = ExtResource("25_bc04q")
-icon_alignment = 1
-expand_icon = true
-
 [node name="TabsClip" type="Control" parent="GUI/Splitter/Center/Tabs/Bar" unique_id=1532866770]
 clip_contents = true
 layout_mode = 2
@@ -1064,8 +1056,13 @@ size_flags_horizontal = 3
 mouse_filter = 2
 
 [node name="TabBar" type="TabBar" parent="GUI/Splitter/Center/Tabs/Bar/TabsClip" unique_id=130268270]
-layout_mode = 0
-offset_bottom = 24.0
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 theme = ExtResource("16_1f7jh")
 theme_override_constants/icon_max_width = 16
@@ -1074,9 +1071,32 @@ close_with_middle_mouse = false
 tab_close_display_policy = 2
 drag_to_rearrange_enabled = true
 
-[node name="RightButton" type="Button" parent="GUI/Splitter/Center/Tabs/Bar" unique_id=1096239978]
+[node name="LeftButton" type="Button" parent="GUI/Splitter/Center/Tabs/Bar/TabsClip" unique_id=1141546916]
 custom_minimum_size = Vector2(24, 0)
-layout_mode = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_bottom = -2.0
+grow_vertical = 2
+action_mode = 0
+icon = ExtResource("25_bc04q")
+icon_alignment = 1
+expand_icon = true
+
+[node name="RightButton" type="Button" parent="GUI/Splitter/Center/Tabs/Bar/TabsClip" unique_id=1096239978]
+custom_minimum_size = Vector2(24, 8)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 0
+grow_vertical = 2
 action_mode = 0
 icon = ExtResource("26_4n5gq")
 icon_alignment = 1

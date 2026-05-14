@@ -86,8 +86,8 @@ public sealed partial class Tabs : Control
 		_tabBar = GetNode<TabBar>("Bar/TabsClip/TabBar");
 		_tabsContainer = GetNode<PanelContainer>("Container");
 
-		_leftButton = GetNode<Button>("Bar/LeftButton");
-		_rightButton = GetNode<Button>("Bar/RightButton");
+		_leftButton = GetNode<Button>("Bar/TabsClip/LeftButton");
+		_rightButton = GetNode<Button>("Bar/TabsClip/RightButton");
 
 		_tabBar.TabCloseDisplayPolicy = TabBar.CloseButtonDisplayPolicy.ShowAlways;
 
@@ -293,16 +293,16 @@ public sealed partial class Tabs : Control
 	{
 		if (_tabBar.Position.X == _maxScroll)
 		{
-			_rightButton.Disabled = true;
+			_rightButton.Visible = false;
 			_scrollRight = false;
 		}
-		else if (_rightButton.Disabled) _rightButton.Disabled = false;
+		else if (!_rightButton.Visible) _rightButton.Visible = true;
 
 		if (_tabBar.Position.X == _scrollSidePadding)
 		{
-			_leftButton.Disabled = true;
+			_leftButton.Visible = false;
 			_scrollLeft = false;
 		}
-		else if (_leftButton.Disabled) _leftButton.Disabled = false;
+		else if (!_leftButton.Visible) _leftButton.Visible = true;
 	}
 }
