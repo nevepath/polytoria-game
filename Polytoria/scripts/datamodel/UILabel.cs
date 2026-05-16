@@ -40,6 +40,7 @@ public partial class UILabel : UIView
 			_text = value;
 			_richLabel.Text = _text;
 			_label.Text = _text;
+			if (_autoSize) UpdateAutosize();
 			OnPropertyChanged();
 		}
 	}
@@ -259,17 +260,17 @@ public partial class UILabel : UIView
 			OnPropertyChanged();
 		}
 	}
-	
+
 	private void UpdateAutosize()
 	{
 		Font font = _label.GetThemeFont("font");
 		Vector2 bounds = NodeControl.Size;
 		int lo = 1, hi = 512, result = 0;
-		
+
 		while (lo <= hi)
 		{
 			int mid = (lo + hi) / 2;
-			int scaled = (int)(mid*FontScaleConversion);
+			int scaled = (int)(mid * FontScaleConversion);
 			Vector2 textBounds = font.GetStringSize(_text, _label.HorizontalAlignment, -1, scaled);
 			if (textBounds.X <= bounds.X && textBounds.Y <= bounds.Y)
 			{
@@ -278,10 +279,10 @@ public partial class UILabel : UIView
 			}
 			else hi = mid - 1;
 		}
-		
+
 		SetTextSize(result);
 	}
-	
+
 	private void SetTextSize(float size)
 	{
 		int setto = (int)(size * FontScaleConversion);
