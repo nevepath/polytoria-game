@@ -16,7 +16,7 @@ public sealed partial class ImageSky : Sky
 	private readonly Texture2D _empty = GD.Load<Texture2D>("res://assets/textures/empty.png");
 	private static readonly Shader _linearShader = GD.Load<Shader>("res://resources/shaders/imagesky_linear.gdshader");
 	private static readonly Shader _nearestShader = GD.Load<Shader>("res://resources/shaders/imagesky_nearest.gdshader");
-	
+
 	private int _topId = 14168;
 	private int _bottomId = 14166;
 	private int _leftId = 14154;
@@ -210,7 +210,7 @@ public sealed partial class ImageSky : Sky
 			OnPropertyChanged();
 		}
 	}
-	
+
 	[Editable, ScriptProperty]
 	public bool UseNearestFiltering
 	{
@@ -219,6 +219,7 @@ public sealed partial class ImageSky : Sky
 		{
 			_nearestFiltering = value;
 			RebuildMaterial();
+			Root.Lighting.ApplySky(this);
 			OnPropertyChanged();
 		}
 	}
@@ -324,14 +325,16 @@ public sealed partial class ImageSky : Sky
 	{
 		_mat.SetShaderParameter("back", (Texture2D?)resource ?? _empty);
 	}
-	
+
+	private ShaderMaterial _mat = null!;
+
 	private void RebuildMaterial()
 	{
 		_mat = new() { Shader = _nearestFiltering ? _nearestShader : _linearShader };
 		SkyMaterial = _mat;
 		ApplyTextures();
 	}
-	
+
 	private void ApplyTextures()
 	{
 		_mat.SetShaderParameter("top", (Texture2D?)(_topImage?.Resource) ?? _empty);
@@ -341,8 +344,6 @@ public sealed partial class ImageSky : Sky
 		_mat.SetShaderParameter("front", (Texture2D?)(_frontImage?.Resource) ?? _empty);
 		_mat.SetShaderParameter("back", (Texture2D?)(_backImage?.Resource) ?? _empty);
 	}
-
-	private ShaderMaterial _mat = null!;
 
 	public override void Init()
 	{
